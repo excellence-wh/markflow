@@ -64,3 +64,22 @@ export interface PhotoItem {
   status: 'idle' | 'processing' | 'done' | 'error';
   error?: string;
 }
+
+/** 平台尺寸预设 */
+export interface PlatformPreset {
+  key: string;
+  label: string;
+  hint: string;
+  width: number; // 0 表示不裁剪（保持原图）
+  height: number;
+}
+
+/** 尺寸预设列表：key='none' 为保持原图 */
+export const platformPresets: PlatformPreset[] = [
+  { key: 'none', label: '保持原图', hint: '不缩放不裁剪', width: 0, height: 0 },
+  { key: 'xhs-3-4', label: '小红书 3:4', hint: '1080×1440', width: 1080, height: 1440 },
+  { key: 'xhs-1-1', label: '小红书 1:1', hint: '1080×1080', width: 1080, height: 1080 },
+  { key: 'tb-800', label: '淘宝主图', hint: '800×800', width: 800, height: 800 },
+  { key: 'tb-detail', label: '淘宝详情宽', hint: '宽 750', width: 750, height: 0 },
+  { key: 'pdd-800', label: '拼多多主图', hint: '800×800', width: 800, height: 800 },
+];

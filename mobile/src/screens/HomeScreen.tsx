@@ -13,6 +13,7 @@ import WatermarkPreview from '../components/WatermarkPreview';
 import { colors } from '../components/ui';
 import { pickPhotos } from '../lib/photoPicker';
 import { processAndSave } from '../lib/batchProcessor';
+import { platformPresets } from '../types';
 
 export default function HomeScreen({ onOpenSettings }: { onOpenSettings: () => void }) {
   const photos = useAppStore((s) => s.photos);
@@ -22,11 +23,14 @@ export default function HomeScreen({ onOpenSettings }: { onOpenSettings: () => v
   const selectedId = useAppStore((s) => s.selectedId);
   const selectPhoto = useAppStore((s) => s.selectPhoto);
   const watermark = useAppStore((s) => s.watermark);
+  const presetKey = useAppStore((s) => s.presetKey);
+  const setPreset = useAppStore((s) => s.setPreset);
   const processing = useAppStore((s) => s.processing);
   const setProcessing = useAppStore((s) => s.setProcessing);
 
   const [progress, setProgress] = useState<string | null>(null);
   const selected = photos.find((p) => p.id === selectedId) ?? null;
+  const preset = platformPresets.find((p) => p.key === presetKey) ?? platformPresets[0];
 
   const maxRemain = 200 - photos.length;
 
@@ -52,7 +56,7 @@ export default function HomeScreen({ onOpenSettings }: { onOpenSettings: () => v
     setProcessing(true);
     setProgress('准备处理…');
     try {
-      const res = await processAndSave(photos, watermark, (done, total) => {
+      const res = await processAndSave(photos, watermark, preset, (done, total) => {
         setProgress(`处理中 ${done}/${total}`);
       });
       const msg = `已保存 ${res.saved} 张到相册` + (res.failed.length ? `，失败 ${res.failed.length} 张` : '');
@@ -121,12 +125,28 @@ export default function HomeScreen({ onOpenSettings }: { onOpenSettings: () => v
       {/* 底部操作 */}
       <View style={styles.footer}>
         {photos.length > 0 && (
-          <View style={styles.footerTop}>
-            <Text style={styles.count}>{photos.length} 张</Text>
-            <TouchableOpacity onPress={clearPhotos}>
-              <Text style={styles.clearText}>清空</Text>
-            </TouchableOpacity>
-          </View>
+          <>
+            <View style={styles.footerTop}>
+              <Text style={styles.count}>{photos.length} 张</Text>
+              <TouchableOpacity onPress={clearPhotos}>
+                <Text style={styles.clearText}>清空</Text>
+              </TouchableOpacity>
+            </View>
+            {/* 平台尺寸预设 */}
+            <View style={styles.presetRow}>
+              {platformPresets.map((p) => (
+                <TouchableOpacity
+                  key={p.key}
+                  onPress={() => setPreset(p.key)}
+                  style={[styles.presetPill, presetKey === p.key && styles.presetPillActive]}
+                >
+                  <Text style={[styles.presetText, presetKey === p.key && styles.presetTextActive]}>
+                    {p.label}
+                  </Text>
+                </TouchableOpacity>
+              ))}
+            </View>
+          </>
         )}
         <TouchableOpacity
           style={[styles.exportBtn, (processing || photos.length === 0) && styles.btnDisabled]}
@@ -176,6 +196,18 @@ const styles = StyleSheet.create({
   footerTop: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 },
   count: { fontSize: 13, color: colors.muted },
   clearText: { fontSize: 13, color: colors.danger },
+  presetRow: { flexDirection: 'row', flexWrap: 'wrap', gap: 6, marginBottom: 10 },
+  presetPill: {
+    paddingHorizontal: 11,
+    paddingVertical: 7,
+    borderRadius: 999,
+    borderWidth: 1,
+    borderColor: colors.border,
+    backgroundColor: colors.card,
+  },
+  presetPillActive: { borderColor: colors.brand, backgroundColor: '#eef2ff' },
+  presetText: { fontSize: 12, color: colors.muted },
+  presetTextActive: { color: colors.brand, fontWeight: '600' },
   exportBtn: { backgroundColor: colors.brand, borderRadius: 14, paddingVertical: 14, alignItems: 'center' },
   btnDisabled: { opacity: 0.5 },
   exportBtnText: { color: '#fff', fontSize: 16, fontWeight: '700' },

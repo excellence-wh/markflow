@@ -6,6 +6,7 @@ interface AppState {
   photos: PhotoItem[];
   selectedId: string | null;
   watermark: WatermarkSettings;
+  presetKey: string;
   processing: boolean;
   progress: { total: number; done: number; current: string } | null;
   // actions
@@ -17,6 +18,7 @@ interface AppState {
   updateWatermark: (patch: Partial<WatermarkSettings>) => void;
   setLogo: (uri: string | null) => void;
   resetWatermark: () => void;
+  setPreset: (key: string) => void;
   setProcessing: (v: boolean) => void;
   setProgress: (p: { total: number; done: number; current: string } | null) => void;
 }
@@ -28,6 +30,7 @@ export const useAppStore = create<AppState>((set) => ({
   photos: [],
   selectedId: null,
   watermark: defaultWatermark(),
+  presetKey: 'none',
   processing: false,
   progress: null,
 
@@ -56,6 +59,7 @@ export const useAppStore = create<AppState>((set) => ({
   updateWatermark: (patch) => set((s) => ({ watermark: { ...s.watermark, ...patch } })),
   setLogo: (uri) => set((s) => ({ watermark: { ...s.watermark, logoUri: uri } })),
   resetWatermark: () => set({ watermark: defaultWatermark() }),
+  setPreset: (key) => set({ presetKey: key }),
   setProcessing: (v) => set({ processing: v }),
   setProgress: (p) => set({ progress: p }),
 }));
