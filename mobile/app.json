@@ -1,0 +1,58 @@
+{
+  "expo": {
+    "name": "印流 MarkFlow",
+    "slug": "markflow-mobile",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "scheme": "markflow",
+    "splash": {
+      "image": "./assets/splash-icon.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#0f172a"
+    },
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.excellencewh.markflow",
+      "infoPlist": {
+        "NSPhotoLibraryUsageDescription": "需要访问相册以选择图片并保存加水印后的图片",
+        "NSPhotoLibraryAddUsageDescription": "需要保存加水印后的图片到相册"
+      }
+    },
+    "android": {
+      "adaptiveIcon": {
+        "backgroundColor": "#E6F4FE",
+        "foregroundImage": "./assets/android-icon-foreground.png",
+        "backgroundImage": "./assets/android-icon-background.png",
+        "monochromeImage": "./assets/android-icon-monochrome.png"
+      },
+      "package": "com.excellencewh.markflow",
+      "permissions": [
+        "READ_MEDIA_IMAGES",
+        "WRITE_EXTERNAL_STORAGE"
+      ],
+      "predictiveBackGestureEnabled": false
+    },
+    "plugins": [
+      "expo-dev-client",
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "允许访问相册以选择图片添加水印"
+        }
+      ],
+      [
+        "expo-media-library",
+        {
+          "photosPermission": "允许访问相册以选择图片",
+          "savePhotosPermission": "允许保存加水印后的图片到相册"
+        }
+      ]
+    ],
+    "web": {
+      "favicon": "./assets/favicon.png",
+      "bundler": "metro"
+    }
+  }
+}

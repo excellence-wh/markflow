@@ -12,7 +12,8 @@
 - [x] 平台尺寸预设（小红书 / 淘宝 / 拼多多 / 保持原图）
 - [x] 导出格式与命名（JPG/PNG/WebP；原文件名 / 前后缀 / 序号）
 - [x] 落地页 + 响应式适配（手机 / 桌面）+ PWA 可安装
-- [ ] 单元测试（watermarkRenderer / imageProcessor / zipPacker）
+- [x] 手机端原生 App（mobile/）：Expo RN + Skia 水印渲染，相册多选 → 本地处理 → 存回相册
+- [ ] 单元测试（watermarkRenderer / imageProcessor / zipPacker / Skia renderer）
 
 ## v1.1
 

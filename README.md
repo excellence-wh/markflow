@@ -27,6 +27,8 @@
 
 ## 🚀 快速开始
 
+### Web 版
+
 ```bash
 # 克隆项目
 git clone https://github.com/excellence-wh/markflow.git
@@ -48,36 +50,54 @@ pnpm preview
 
 > 说明：本仓库使用 pnpm。首次 `pnpm install` 若提示 esbuild 构建被忽略，请在 `pnpm-workspace.yaml` 中保留 `allowBuilds: esbuild: true` 后重新安装。
 
+### 📱 手机端（Expo React Native + Skia）
+
+```bash
+cd mobile
+
+# 安装依赖（Expo 手机端独立用 npm）
+npm install
+
+# 启动（已装 Expo Go）
+npm start
+
+# 或直接跑 Android 原生（需 development build，Skia 原生依赖）
+npx expo run:android   # 需要 expo-dev-client 开发构建
+```
+
+> 手机端使用 `@shopify/react-native-skia`（RN 里的 Canvas 等价物）做像素级水印渲染，需要 **development build**（`expo run:android` / EAS），Expo Go 无法运行 Skia。图片从相册多选 → 本地渲染水印 → 保存回相册，全程不上传。
+
 ## 🧰 技术栈
 
-| 类别 | 选型 |
-|-----|------|
-| 框架 | React 18 + TypeScript |
-| 构建 | Vite |
-| UI | Tailwind CSS v4（shadcn 风格） |
-| 图片处理 | Canvas API |
-| 批量打包 | JSZip |
-| 状态管理 | Zustand |
-| PWA | vite-plugin-pwa |
-| 路由 | React Router |
+| 类别 | Web | 手机端 (mobile/) |
+|-----|-----|-----|
+| 框架 | React 18 + TypeScript | Expo 57 + React Native + TS |
+| 构建 | Vite | Metro |
+| UI | Tailwind CSS v4 | React Native 原生组件 |
+| 图片处理 | Canvas API | @shopify/react-native-skia |
+| 批量打包 | JSZip | expo-media-library 存相册 |
+| 状态管理 | Zustand | Zustand |
+| PWA | vite-plugin-pwa | - |
+| 路由 | React Router | 底部 Tab（原生） |
 
 ## 📁 项目结构
 
 ```
 markflow/
-├── public/                  # 静态资源 + PWA 图标
+├── public/                  # Web 静态资源 + PWA 图标
+├── mobile/                  # 📱 Expo React Native 手机端
+│   ├── src/
+│   │   ├── components/      # 预览 / UI 组件
+│   │   ├── screens/         # Home / 设置 页
+│   │   ├── watermark/       # Skia 水印渲染（geometry + renderer）
+│   │   ├── lib/             # 相册选择 / 保存 / 批量处理
+│   │   └── store/           # Zustand 状态
+│   ├── App.tsx              # 底部 Tab 导航
+│   └── app.json             # Expo 配置（权限 / dev-client）
 ├── scripts/                 # 工具脚本（图标生成等）
-├── src/
-│   ├── components/          # React 组件
-│   │   ├── Uploader/        # 上传组件
-│   │   ├── PreviewCanvas/   # 预览画布（实时渲染水印）
-│   │   ├── WatermarkPanel/  # 水印设置面板
-│   │   ├── ImageList/       # 图片列表
-│   │   └── ExportBar/       # 批量导出
-│   ├── utils/               # 工具函数
-│   │   ├── imageProcessor.ts    # 图片处理核心
-│   │   ├── zipPacker.ts         # ZIP 打包
-│   │   └── watermarkRenderer.ts # 水印渲染（预览 + 导出共用）
+├── src/                     # Web 源码
+│   ├── components/          # React 组件（Uploader/Preview/WatermarkPanel/ImageList/ExportBar）
+│   ├── utils/               # Canvas 水印处理（imageProcessor/zipPacker/watermarkRenderer）
 │   ├── store/               # Zustand 状态管理
 │   ├── pages/               # 页面（Landing / Tool）
 │   └── styles/              # 全局样式
