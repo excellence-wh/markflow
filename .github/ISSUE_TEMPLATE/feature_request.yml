@@ -1,0 +1,27 @@
+name: Feature request
+description: Suggest an idea for this project
+title: "[Feature] "
+labels: [enhancement]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: 你的功能请求是否与问题相关？请描述
+      description: A clear and concise description of what the problem is.
+    validations:
+      required: true
+  - type: textarea
+    id: solution
+    attributes:
+      label: 描述你想要的解决方案
+      description: A clear and concise description of what you want to happen.
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: 描述你考虑过的替代方案
+  - type: textarea
+    id: context
+    attributes:
+      label: 附加上下文

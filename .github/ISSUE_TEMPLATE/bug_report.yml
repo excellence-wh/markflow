@@ -1,0 +1,42 @@
+name: Bug report
+description: Create a report to help us improve
+title: "[Bug] "
+labels: [bug]
+body:
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: 描述问题 (Describe the bug)
+      description: A clear and concise description of what the bug is.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: 复现步骤 (To reproduce)
+      description: Steps to reproduce the behavior.
+      placeholder: |
+        1. Go to '...'
+        2. Click on '....'
+        3. See error
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: 期望行为 (Expected behavior)
+      description: What you expected to happen.
+  - type: textarea
+    id: screenshot
+    attributes:
+      label: 截图 (Screenshots)
+      description: If applicable, add screenshots to help explain.
+  - type: input
+    id: env
+    attributes:
+      label: 环境 (Environment)
+      description: OS / Browser version
+  - type: textarea
+    id: context
+    attributes:
+      label: 附加上下文 (Additional context)
