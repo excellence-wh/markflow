@@ -1,3 +1,5 @@
-# pnpm 11 settings — 允许执行 esbuild 的构建脚本
+# pnpm 11 settings
+# packages: 单包项目留空即可（必须存在，否则 CI/setup-node 的 pnpm cache 报错）
+packages: []
 allowBuilds:
   esbuild: true
